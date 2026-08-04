@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College TOS & Word Export</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container no-print">
+        <header>
+            <h1>College TOS & Test Generator</h1>
+            <p>Modern cream & green interface for Higher Education instructors.</p>
+        </header>
+
+        <section class="form-section">
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label>Course & Major</label>
+                    <input type="text" id="course" placeholder="e.g. BSIT">
+                </div>
+                <div class="input-group">
+                    <label>Year & Section</label>
+                    <input type="text" id="yearSection" placeholder="e.g. 3-A">
+                </div>
+                <div class="input-group">
+                    <label>Subject Code/Name</label>
+                    <input type="text" id="subject" placeholder="e.g. IT 311">
+                </div>
+                <div class="input-group">
+                    <label>Examination Term</label>
+                    <select id="term">
+                        <option value="Midterm Examination">Midterm Examination</option>
+                        <option value="Final Examination">Final Examination</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Total Items</label>
+                    <input type="number" id="totalItems" value="50">
+                </div>
+            </div>
+
+            <hr>
+            <h3>Lessons / Topics</h3>
+            <div id="topicsContainer">
+                <div class="topic-row">
+                    <input type="text" class="topic-name" placeholder="Specific Topic Name">
+                    <input type="number" class="topic-hours" placeholder="Hours">
+                    <button class="btn-remove" onclick="removeRow(this)">×</button>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="addRow()">+ Add Topic</button>
+                <button class="btn-primary" onclick="generateTOS()">Generate TOS</button>
+            </div>
+        </section>
+
+        <!-- AI Section -->
+        <section class="ai-section" id="aiSection" style="display:none;">
+            <h3>AI Test Item Generator</h3>
+            <button class="btn-secondary" onclick="copyPrompt()">1. Copy AI Prompt</button>
+            <textarea id="aiResponsePaste" rows="5" placeholder="2. Paste Gemini/GPT response here..."></textarea>
+            <button class="btn-primary" onclick="formatTest()">3. Generate Test & Answer Key</button>
+        </section>
+    </div>
+
+    <!-- PRINTABLE TOS -->
+    <div id="printableTOS" class="print-only">
+        <div class="tos-header">
+            <h2 id="outSubject">SUBJECT</h2>
+            <p><strong>TABLE OF SPECIFICATIONS</strong></p>
+            <p><span id="outTerm"></span> | <span id="outCourse"></span> <span id="outYear"></span></p>
+        </div>
+        <table id="tosTable">
+            <thead>
+                <tr>
+                    <th rowspan="2">Specific Topics / Lessons</th>
+                    <th rowspan="2">Hours</th>
+                    <th rowspan="2">Weight</th>
+                    <th rowspan="2">Items</th>
+                    <th colspan="3">Lower Order (60%)</th>
+                    <th colspan="3">Higher Order (40%)</th>
+                    <th rowspan="2">Placement</th>
+                </tr>
+                <tr>
+                    <th>Rem</th><th>Und</th><th>App</th>
+                    <th>Ana</th><th>Eva</th><th>Cre</th>
+                </tr>
+            </thead>
+            <tbody id="tosBody"></tbody>
+            <tfoot><tr id="tosFooter"></tr></tfoot>
+        </table>
+        <div class="signature-section">
+            <div class="sig-box"><p>Prepared by:</p><br><div class="sig-line"></div><p><strong>Subject Instructor</strong></p></div>
+            <div class="sig-box"><p>Approved by:</p><br><div class="sig-line"></div><p><strong>Dean / Program Chair</strong></p></div>
+        </div>
+        <div class="no-print" style="text-align:center; margin-top:20px;">
+            <button class="btn-primary" onclick="window.print()">Print TOS</button>
+        </div>
+    </div>
+
+    <!-- PRINTABLE TEST PAPER -->
+    <div id="testPaperArea" class="print-only">
+        <div id="wordContent">
+            <div class="test-header">
+                <h2>NAME OF COLLEGE/UNIVERSITY</h2>
+                <h3>OFFICE OF THE DEAN</h3>
+                <p><strong id="testTermHead"></strong> in <strong id="testSubjHead"></strong></p>
+            </div>
+            <div class="student-info">
+                <span>Name: ___________________________</span>
+                <span>Course/Year: <span id="testCourseYear"></span></span>
+            </div>
+            <div id="testContent"></div>
+            
+            <div class="page-break"></div>
+            <div id="answerKeyArea">
+                <h3>ANSWER KEY</h3>
+                <table id="answerKeyTable" style="width: auto; margin: 0 auto;"></table>
+            </div>
+        </div>
+
+        <div class="no-print" style="text-align:center; margin-top:30px; padding-bottom:50px;">
+            <button class="btn-primary" onclick="window.print()">Print Test</button>
+            <button class="btn-secondary" style="background:#2b5797; color:white;" onclick="exportToWord()">Download Word (.doc)</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
